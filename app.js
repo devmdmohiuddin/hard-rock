@@ -8,12 +8,24 @@ document.getElementById("search-btn").addEventListener("click", () => {
       const { data } = await response.json();
       displaySongDetails(data);
     };
-
     fetchSearchText();
+    displayLoader(true)
   } catch (err) {
     console.log(err);
   }
 });
+
+document.getElementById('search-box').addEventListener('keypress', function(event) {
+  const searchBtn = document.getElementById('search-btn')
+  const searchText = document.getElementById("input-search").value;
+
+  if (searchText !== '') {
+    if (event.key === 'Enter' ) {
+      searchBtn.click()
+    }
+  }
+  
+})
 
 const displaySongDetails = songs => {
   let html = "";
@@ -34,6 +46,7 @@ const displaySongDetails = songs => {
       </div>
     `)
   );
+  displayLoader()
   document.getElementById("song-wrapper").innerHTML = html;
 };
 
@@ -56,3 +69,12 @@ const getLyrics = (artist, title) => {
 const displayLyrics = lyrics => {
   document.getElementById("lyrics-song").innerText = lyrics;
 };
+
+const displayLoader = () => {
+  const loader = document.querySelector('.spinner-border');
+  const songs = document.getElementById('song-wrapper');
+  
+  loader.classList.toggle('d-none')
+  songs.classList.toggle('d-none')
+  
+}
